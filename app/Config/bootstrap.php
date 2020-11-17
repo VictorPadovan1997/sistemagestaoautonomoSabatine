@@ -111,9 +111,6 @@ CakeLog::config('error', array(
 	'file' => 'error',
 ));
 
-CakePlugin::loadAll(array(
-	'Pdf' => array('bootstrap' => true),
-));
 
 
 define('PERMISSAO_VAYRON', 2);
