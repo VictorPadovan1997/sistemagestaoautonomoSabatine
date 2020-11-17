@@ -6,7 +6,7 @@ class AppController extends Controller {
 
     public $layout = 'index';
 
-    public $helpers = array('Js' => array('Jquery'), 'Pdf.Report', 'Pdf.Document');
+    public $helpers = array('Js' => array('Jquery'));
 
    
     public $components = array(
