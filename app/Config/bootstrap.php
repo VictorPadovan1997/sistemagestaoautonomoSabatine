@@ -115,8 +115,6 @@ CakePlugin::loadAll(array(
 	'Pdf' => array('bootstrap' => true),
 ));
 
-Configure::write('App.HashSMS', '19fcf86e018df950be059fbad16af4ad');
-
 
 define('PERMISSAO_VAYRON', 2);
 define('PERMISSAO_ESTABELECIMENTO', 1);

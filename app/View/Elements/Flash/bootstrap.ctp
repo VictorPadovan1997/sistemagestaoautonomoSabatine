@@ -76,7 +76,6 @@ echo $this->Html->div('alert alert-' . $key . ' alert-dismissible fade show',
 }
 </style>
 <?php
- echo $this->Html->script('jquery-3.4.1.min.js');
  $this->Js->buffer("$('.fechar').animate({opacity: 1.0}, 4000).fadeOut().addClass('animated fadeInDown');"
 );
 echo $this->Js->writeBuffer();

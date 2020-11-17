@@ -3,11 +3,6 @@ echo $this->element('header');
 
 $controllerName = $this->request->params['controller'];
 
-$imprimirButton = '';
-if (!empty($produtos)) {
-    $imprimirButton .= $this->fetch('imprimirButton');
-}
-
 $filtro = $this->Form->create(false, array('class' => 'form-inline'));
 $filtro .= $this->fetch('searchFields'); 
 $filtro .= $this->Form->button(
@@ -15,23 +10,24 @@ $filtro .= $this->Form->button(
     array(
         'class' => 'btn btn-secondary',
         'escape' => false,
-        'class' => 'btn btn-secondary float-right mr-2 hint--right',
-        'aria-label'=>"Pesquisar",
+        'class' => 'btn btn-secondary offset-1 mr-2',
+        'id'=>"Pesquisar",
         'update' => '#content',
         'requisicaoAjax' => 'post'
     )
 );
 $filtro .= $this->Form->end();
 $filtroBar = $this->Html->div('row mb-3 mt-3', 
-    $this->Html->div('col-md-10', $filtro) . 
-    $this->Html->div('col-md-2', $imprimirButton) 
+    $this->Html->div('col-md-10', $filtro) 
 );
     
 
 $tableHeaders = $this->fetch('tableHeaders'); 
-$header = $this->Html->tag('thead', $tableHeaders);
+$header = $this->Html->tag('thead', $tableHeaders, array('class' => 'thead-light'));
 $tableCells = $this->fetch('tableCells'); 
-$table = $this->Html->tag('table', $header . $tableCells, array('class' => 'table'));
+$table = $this->Html->div('table-responsive',
+        $this->Html->tag('table', $header . $tableCells, array('class' => 'table align-items-center table-flush'))
+);
 
 $this->Paginator->options(array('update' => '#content'));
 $params = $this->Paginator->params();
@@ -47,7 +43,7 @@ $paginacaoLeft = array(
                 array('class' => 'btn btn-secondary', 'escape' => false, 'tag' => false)
         )) .
         $this->Form->input('Pagina.atual', array(
-            'class' => 'form-control paginacao-campo-size',
+            'class' => 'form-control ',
             'label' => false,
             'value' => $params['page'],
             'url' => $urlPage,
@@ -108,7 +104,7 @@ if ($tableCells != '<tr></tr>') {
 $this->Js->buffer('setPaginate();');
 $this->Js->buffer('createAjax()');
 $this->Js->buffer('$(".nav-link").removeClass("active");');
-$this->Js->buffer('$(".nav-link a[href$=\'Vayron\']").addClass("active");');
+$this->Js->buffer('$(".nav-link a[href$=\'gestaoautonomo\']").addClass("active");');
 if ($this->request->is('ajax')) {
     echo $this->Js->writeBuffer();
 }

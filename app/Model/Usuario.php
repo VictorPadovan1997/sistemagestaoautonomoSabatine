@@ -92,36 +92,37 @@ class Usuario extends AppModel {
         return $desbloqueio;
     }
 
+
+
+    public function salvaUsuario($data) {
+        unset($data['Usuario']['estabelecimento_id']);
+        unset($data['Usuario']['id']);
+        $this->create();
+        $this->save($data['Usuario']);
+    }
+
+    public function gravaIdEstabelecimento($idEstabelecimento, $idUsuario) {
+        $atualizado = $this->updateAll(
+            array('Usuario.estabelecimento_id' => $idEstabelecimento),
+            array('Usuario.id' => $idUsuario, 'Usuario.estabelecimento_id' => null)
+        );
+
+        return $atualizado;
+    }
+
     public function getLoginFile($fileName) {
         $file = null;
+        $stringCorrigida = str_replace('\gestaoautonomo', '\homedev', ROOT);
         if (!empty($fileName)) {
-            $rota = ROOT . DS . 'app' . DS . 'tmp' . DS . $fileName . '.TXT'; 
+            $rota = $stringCorrigida . DS . 'app' . DS . 'tmp' . DS . $fileName . '.TXT';
             $path = new File($rota);
             $file = $path->read();
             $path->close();
-            $path->delete();
         }
         if (!empty($file)) {
+          
             return unserialize(base64_decode(urldecode($file)));
         }
     }
-    
-    public function getUsuarioToLogin($usuario) {
-        $usuarioFound = array();
-        if (!empty($usuario['Estabelecimento']['codigo']) &&
-        !empty($usuario['Usuario']['login']) && 
-            !empty($usuario['Usuario']['senha']) && 
-            !empty($usuario['Usuario']['cpf'])
-        ) {
-            $conditions = array(
-                'Estabelecimento.codigo' => $usuario['Estabelecimento']['codigo'], 
-                'Usuario.login' => $usuario['Usuario']['login']
-            );
-            $contain = array('Estabelecimento');
-            $usuarioFound = $this->find('first', compact('conditions', 'contain'));
-        }
-
-        return $usuarioFound;
-    }  
 }
 ?>

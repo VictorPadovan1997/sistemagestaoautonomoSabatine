@@ -222,11 +222,11 @@ Configure::write('Config.language', 'pt_BR');
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'd56sa74d6a4dsaaGSthgrfdcsDFGAKfasf4a5f4a');
+	Configure::write('Security.salt', 'd56sa74d6a4dsaaGSthgrfdcsDFGAKfuoiuy9ylasf4a5f4a');
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '456489489413219876535489789713213247876146');
+	Configure::write('Security.cipherSeed', '45648948941321987653548978971321l0y9hi03247876146');
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
  * Will append a query string parameter containing the time the file was modified. This is

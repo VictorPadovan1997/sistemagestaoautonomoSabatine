@@ -38,11 +38,11 @@ class EmailConfig {
 
 	public $gmail = array(
         'transport' => 'Smtp',
-        'from' => array('vayronmarketing@gmail.com' => 'Vayron | Marketing'),
+        'from' => array('vayronmarketing@gmail.com' => 'HomeDev | Alteração de Senha'),
         'host' => 'ssl://smtp.gmail.com',
         'port' => 465,
         'timeout' => 30,
-        'username' => 'vayronmarketing@gmail.com',
+        'username' => 'desenvolvimentohomedev@gmail.com',
         'password' => 'pirata2304',
         'client' => null,
         'log' => false,

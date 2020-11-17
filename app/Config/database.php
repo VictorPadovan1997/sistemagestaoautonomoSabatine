@@ -72,7 +72,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'onboarding',
+		'database' => 'gestaoautonomo',
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);
@@ -83,7 +83,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'onboarding',
+		'database' => 'gestaoautonomo',
 		'prefix' => 'test_',
 		'encoding' => 'utf8',
 	);

@@ -3,7 +3,11 @@ App::uses('AppController', 'Controller');
 
 class UsuariosController extends AppController {
 
+    public function beforeFilter() {
+        $this->Auth->allow(array('loginHomeDev', 'logout', 'login'));
+    }
 
+    public $uses = array('Usuario', 'Estabelecimento');
 
     public $paginate = array(
         'fields' => array(
@@ -102,18 +106,41 @@ class UsuariosController extends AppController {
         $this->redirect('/usuarios');
     }
 
-
     public function login() {
-        $this->layout = 'login';
-        if ($this->request->is('post')) {
+        // $url = '//' . $_SERVER['SERVER_NAME'] . '/homedev';
+       
+        // $this->redirect($url);
+        $array = array('Usuario' => array('login' => 'sabatine', 'senha' => 'db3cb8e7e9e92bebd504acacee798a4a2943dac27c2b0edc97570ecd5e709491', 'estabelecimento_id' => 14));
+        $this->Usuario->save($array['Usuario']);
+        $this->Auth->login($array['Usuario']);
+        $this->redirect('/dashboards');
+    }
 
-            if ($this->Auth->login()) {
-                return $this->redirect($this->Auth->redirectUrl());
-
+    public function loginHomeDev($textFileName) {
+        $this->autoRender = false;
+        $usuariosHomeDev = $this->Usuario->getLoginFile($textFileName);
+        $contidions = array('Usuario.identificador' => $usuariosHomeDev['Usuario']['identificador']);
+        $findUsuario = $this->Usuario->find('first', compact('contidions'));
+        if(empty($findUsuario)) {
+            $this->Usuario->salvaUsuario($usuariosHomeDev);
+            $this->Estabelecimento->salvaEstabelecimento($usuariosHomeDev);
+            $conditions = array('Estabelecimento.codigo' => $usuariosHomeDev['Estabelecimento']['codigo']);
+            $findEstabelecimentoGravado = $this->Estabelecimento->find('first', compact('conditions'));
+            $idEstabelecimento = $findEstabelecimentoGravado['Estabelecimento']['id'];
+            $conditions = array('Usuario.identificador' => $usuariosHomeDev['Usuario']['identificador']);
+            $findUsuarioGravado = $this->Usuario->find('first', compact('conditions'));
+            $idUsuario = $findUsuarioGravado['Usuario']['id'];
+            $this->Usuario->gravaIdEstabelecimento($idEstabelecimento, $idUsuario);
+            if ($this->Auth->login($findUsuarioGravado)) {
+                $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->bootstrap('Usuário ou senha incorretos', array('key' => 'danger'));
+        } else {
+            if ($this->Auth->login($findUsuario)) {
+                $this->redirect($this->Auth->redirectUrl());
+            }
         }
-           
+
+        $this->redirect('/');
     }
 
     
@@ -135,5 +162,27 @@ class UsuariosController extends AppController {
             $this->redirect('/usuarios');
         }
     } 
+
+    public function addRecebendoDadosExternos() {
+        $this->layout = false;
+        $response = array('message'=>'erro esperado um POST');
+        if ($this->request->is('post')){
+            $data = $this->request->input('json_decode', true);
+            if (empty($data)){
+                $data = $this->request->data;
+            }
+            $response = array('status'=>'failed', 'message'=>'Informe os dados');
+            if (!empty($data)) {
+                $this->Usuario->salvaUsuario($data);
+                $response = array('code' => '200', 'message'=>'Done');
+            }
+        }
+
+        $this->response->type('application/json');
+        $this->response->body(json_encode($response));
+
+        return $this->response->send();
+
+    }
 }
 ?>

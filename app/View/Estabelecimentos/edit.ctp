@@ -4,9 +4,16 @@ $this->extend('/Common/form');
 
 $formFields = $this->element('formCreate');
 $formFields .= $this->Form->hidden('Estabelecimento.id');
-
+$formFields .= $this->Form->hidden('Estabelecimento.codigo');
 $formFields .= $this->Html->tag('h4', 'Dados Pessoais', array('class' => 'mt-4'));
 $formFields .= $this->Html->tag('hr');
+$formFields .= $this->Html->div('form-row', 
+    $this->Form->input('Estabelecimento.codigo', array(
+    'label' => array('text' => 'CODIGO   *'),
+    'div' => array('class' => 'form-group col-md-3'),
+    'disabled' => true
+    ))
+);
 $formFields .= $this->Html->div(
     'form-row',
     $this->Form->input('Estabelecimento.nome_fantasia', array(

@@ -4,13 +4,11 @@ App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
 
-    public $layout = 'onboardingIndex';
+    public $layout = 'index';
 
-    public $helpers = array(
-        'Pdf.Document',
-        'Pdf.Report',
-        'Js' => 'Jquery'
-    );
+    public $helpers = array('Js' => array('Jquery'), 'Pdf.Report', 'Pdf.Document');
+
+   
     public $components = array(
         'Flash',
         'RequestHandler',
@@ -30,6 +28,7 @@ class AppController extends Controller {
             ),
         ),  
     );
+    
 
     public $saveMethod = 'save';
 
@@ -38,7 +37,14 @@ class AppController extends Controller {
         if ($this->request->is('ajax')) {
             $this->layout = false;
         }
-        $this->request->data = $this->getEditData($id);
+        if (empty($this->request->data[$this->modelClass])) {
+           $this->request->data = $this->{$this->modelClass}->viewData($id);
+          
+        }
+        $this->buscaClientes();
+        $this->buscaProdutos();
+        $this->buscaCategorias();
+        $this->buscaMateriaPrima();
     }
 
     public function add() {
@@ -52,7 +58,10 @@ class AppController extends Controller {
                 $this->redirect('/' . $this->getControllerName());
             }
         }
-        $this->getModulo();
+        $this->buscaClientes();
+        $this->buscaProdutos();
+        $this->buscaCategorias();
+        $this->buscaMateriaPrima();
     }
 
     
@@ -71,6 +80,7 @@ class AppController extends Controller {
 
     public function delete($id) {
         $this->{$this->getModelName()}->delete($id);
+       
         $this->Flash->bootstrap('Excluído com sucesso!', array('key' => 'success'));
         $this->redirect('/' . $this->getControllerName());
     }
@@ -88,10 +98,10 @@ class AppController extends Controller {
         } else {
             $this->request->data = $this->{$this->modelClass}->editData($id);
         }
-        $this->setFields();
-        $this->getEditData($id);
-        $this->getModulo($id);
-
+        $this->buscaClientes();
+        $this->buscaProdutos();
+        $this->buscaCategorias();
+        $this->buscaMateriaPrima();
     }
 
     public function afterEdit() {
@@ -139,13 +149,24 @@ class AppController extends Controller {
     }
 
     
-    public function getModulo() {
-        $modulos = ClassRegistry::init('Modulo');
-        $this->set('modulos', $modulos->find('list', array('fields' => array('Modulo.id', 'Modulo.nome'))));
-    }
+    public function buscaCategorias() {
+        $categorias = ClassRegistry::init('Categoria');
+        $this->set('categorias', $categorias->find('list', array('fields' => array('Categoria.id', 'Categoria.nome'))));
+    }  
 
+    public function buscaClientes() {
+        $clientes = ClassRegistry::init('Cliente');
+        $this->set('clientes', $clientes->find('list', array('fields' => array('Cliente.id', 'Cliente.nome'))));
+    }  
 
-
-    
+    public function buscaProdutos() {
+        $produtos = ClassRegistry::init('Produto');
+        $this->set('produtos', $produtos->find('list', array('fields' => array('Produto.id', 'Produto.nome'))));
+    }  
+   
+    public function buscaMateriaPrima() {
+        $materiaprima = ClassRegistry::init('Materia');
+        $this->set('materiaprima', $materiaprima->find('list', array('fields' => array('Materia.id', 'Materia.nome'))));
+    } 
     
 }

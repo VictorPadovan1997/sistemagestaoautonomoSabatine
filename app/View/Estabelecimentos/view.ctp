@@ -8,6 +8,16 @@ $formFields .= $this->Html->tag('h4', 'Dados Pessoais', array('class' => 'mt-4')
 $formFields .= $this->Html->tag('hr');
 $formFields .= $this->Html->div(
     'form-row',
+    $this->Form->input('Estabelecimento.codigo', array(
+        'required' => false,
+        'div' => array('class' => 'form-group col-md-4'),
+        'class' => 'form-control',
+        'label' => array('text' => 'Codigo'),
+        'error' => array('attributes' => array('class' => 'invalid-feedback'))
+    ))
+);
+$formFields .= $this->Html->div(
+    'form-row',
     $this->Form->input('Estabelecimento.nome_fantasia', array(
         'required' => false,
         'div' => array('class' => 'form-group col-md-4'),

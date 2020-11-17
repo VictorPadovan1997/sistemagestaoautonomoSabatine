@@ -108,6 +108,7 @@
           ?> 
           <?php echo $this->Html->link($this->Html->tag('span',  '&#xe01d;', array('class' => 'material-icons text-primary' )) . 'Rel. Produto Mais Visitado','/usuarios', array('class' => 'nav-link', 'escape' => false));
           ?>
+          
             </a>
           </li>
         </ul>
