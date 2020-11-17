@@ -5,6 +5,9 @@
 /build
 /dist
 /tags
+vendors/
+vendor/
+.env
 *.mo
 
 # IDE and editor specific files #
